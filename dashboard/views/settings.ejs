@@ -267,4 +267,43 @@
     </form>
 </section>
 
+<section class="card" style="margin-top:20px;">
+    <h2>Build</h2>
+    <% if (typeof build !== 'undefined' && build && build.available) { %>
+        <p class="muted small" style="line-height:1.7;">
+            <strong>Commit:</strong>
+            <code><%= build.commitShort || '(unknown)' %></code>
+            <% if (build.dirty) { %>
+                <span style="color:var(--jondo-red, #c00); font-weight:600;"> (uncommitted local edits)</span>
+            <% } %>
+            <br>
+            <% if (build.branch) { %>
+                <strong>Branch:</strong> <code><%= build.branch %></code><br>
+            <% } %>
+            <% if (build.subject) { %>
+                <strong>Last change:</strong> <em><%= build.subject %></em><br>
+            <% } %>
+            <% if (build.commitDate) { %>
+                <strong>Committed:</strong>
+                <%= new Date(build.commitDate).toLocaleString('en-GB') %><br>
+            <% } %>
+            <% if (build.deployedAt) { %>
+                <strong>Server updated:</strong>
+                <%= new Date(build.deployedAt).toLocaleString('en-GB') %>
+            <% } %>
+        </p>
+        <p class="muted small">
+            If the commit here doesn't match the latest on GitHub
+            after running <code>update-dashboard.sh</code>, restart
+            the service:
+            <code>sudo systemctl restart jondo-dashboard.service</code>.
+        </p>
+    <% } else { %>
+        <p class="muted small">
+            Build information isn't available (not a git checkout, or
+            <code>git</code> isn't installed).
+        </p>
+    <% } %>
+</section>
+
 <%- include('partials/foot') %>

@@ -7,6 +7,7 @@ const { sendMail, loadSettings } = require('../services/mailer');
 const { runOnce } = require('../services/alerts');
 const { hhmmToMinutes } = require('../services/cameraSchedule');
 const { sendWhatsApp } = require('../services/whatsapp');
+const { loadBuildInfo } = require('../services/buildInfo');
 
 const router = express.Router();
 router.use(requireAdmin);
@@ -20,7 +21,11 @@ function cleanTime(v, fallback) {
 router.get('/', async (req, res, next) => {
     try {
         const settings = await loadSettings();
-        res.render('settings', { title: 'Settings', settings });
+        res.render('settings', {
+            title: 'Settings',
+            settings,
+            build: loadBuildInfo(),
+        });
     } catch (err) { next(err); }
 });
 
